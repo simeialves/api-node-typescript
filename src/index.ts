@@ -1,3 +1,6 @@
 import { server } from "./server/Server.js";
 
-server.listen(3333, () => console.log("App rodando..."));
+let port = process.env.PORT || 3333;
+server.listen(port, () =>
+  console.log(`Server is running on http://localhost:${port}`)
+);
