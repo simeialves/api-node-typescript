@@ -1,15 +1,42 @@
 import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+import * as yup from "yup";
 
 interface ICidade {
   nome: string;
+  estado: string;
 }
 
-export const create = (req: Request<{}, {}, ICidade>, res: Response) => {
-  const { nome }: ICidade = req.body;
+const bodyValidation: yup.ObjectSchema<ICidade> = yup.object().shape({
+  nome: yup.string().required().min(3),
+  estado: yup.string().required().length(2),
+});
 
-  if (!nome) {
-    return res.status(400).json({ error: "Nome da cidade é obrigatório" });
+export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
+  let validadeData: ICidade | undefined = undefined;
+
+  try {
+    validadeData = await bodyValidation.validate(req.body, {
+      abortEarly: false,
+    });
+  } catch (err) {
+    const yupError = err as yup.ValidationError;
+    const errors: Record<string, string> = {};
+
+    yupError.inner.forEach((error) => {
+      if (!error.path) return;
+
+      errors[error.path] = error.message;
+    });
+
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      errors,
+    });
   }
 
-  return res.status(201).json({ message: "Cidade criada com sucesso" });
+  console.log(validadeData);
+
+  return res
+    .status(StatusCodes.CREATED)
+    .json({ message: "Cidade criada com sucesso" });
 };
