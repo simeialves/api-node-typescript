@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as yup from "yup";
 
@@ -12,13 +12,13 @@ const bodyValidation: yup.ObjectSchema<ICidade> = yup.object().shape({
   estado: yup.string().required().length(2),
 });
 
-export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
-  let validadeData: ICidade | undefined = undefined;
-
+export const createBodyValidator: RequestHandler = async (req, res, next) => {
   try {
-    validadeData = await bodyValidation.validate(req.body, {
+    await bodyValidation.validate(req.body, {
       abortEarly: false,
     });
+
+    return next();
   } catch (err) {
     const yupError = err as yup.ValidationError;
     const errors: Record<string, string> = {};
@@ -33,9 +33,40 @@ export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
       errors,
     });
   }
+};
 
-  console.log(validadeData);
+interface IFilter {
+  filter?: string;
+}
 
+const queryValidation: yup.ObjectSchema<IFilter> = yup.object().shape({
+  filter: yup.string().required().min(3),
+});
+
+export const createQueryValidator: RequestHandler = async (req, res, next) => {
+  try {
+    await queryValidation.validate(req.query, {
+      abortEarly: false,
+    });
+
+    return next();
+  } catch (err) {
+    const yupError = err as yup.ValidationError;
+    const errors: Record<string, string> = {};
+
+    yupError.inner.forEach((error) => {
+      if (!error.path) return;
+
+      errors[error.path] = error.message;
+    });
+
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      errors,
+    });
+  }
+};
+
+export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
   return res
     .status(StatusCodes.CREATED)
     .json({ message: "Cidade criada com sucesso" });
