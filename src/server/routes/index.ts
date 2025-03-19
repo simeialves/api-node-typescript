@@ -1,10 +1,15 @@
 import { Router } from "express";
+import { StatusCodes } from "http-status-codes";
 import { CidadesController } from "../controllers/index.js";
 
 const router = Router();
 
 router.get("/", (_, res) => {
   return res.send("Olá Dev!");
+});
+
+router.get("/ping", (_, res) => {
+  return res.status(StatusCodes.OK).send("pong");
 });
 
 router.get(
