@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { StatusCodes } from "http-status-codes";
-import { CidadesController } from "../controllers/index.js";
+import { CidadesController } from "../controllers/index.ts";
 
 const router = Router();
 

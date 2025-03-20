@@ -1,1 +1,1 @@
-export { CidadesController } from "./cidades/index.js";
+export { CidadesController } from "./cidades/index.ts";

@@ -1,8 +1,8 @@
 import "dotenv/config";
 import express from "express";
-import "./shared/services/TranslationsYup.js";
+import "./shared/services/TranslationsYup.ts";
 
-import { router } from "./routes/index.js";
+import { router } from "./routes/index.ts";
 
 const server = express();
 

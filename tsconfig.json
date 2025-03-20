@@ -7,7 +7,9 @@
     "outDir": "./build",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
   "include": ["src"],
   "exclude": ["./jest.config.ts", "./node_modules", "./tests", "./build"]
