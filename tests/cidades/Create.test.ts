@@ -2,7 +2,9 @@ import { StatusCodes } from "http-status-codes";
 import { testServer } from "../jest.setup";
 describe("Cidades - Create", () => {
   it("Criar registro", async () => {
-    const res1 = await testServer.post("/cidades").send({ nome: "São Paulo" });
+    const res1 = await testServer
+      .post("/cidades")
+      .send({ nome: "Belo Horizonte" });
 
     expect(res1.statusCode).toBe(StatusCodes.CREATED);
     expect(typeof res1.body).toEqual("number");
@@ -26,5 +28,10 @@ describe("Cidades - Create", () => {
         nome: "Este campo é obrigatório",
       },
     });
+
+    const res3 = await testServer.post("/cidades").send({ nome: "BH" });
+    expect(res3.statusCode).toBe(StatusCodes.BAD_REQUEST);
+
+    expect(res3.body).toHaveProperty("body.nome");
   });
 });
