@@ -7,7 +7,9 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon --watch src --ext ts --exec ts-node --esm src/index.ts",
-    "test": "jest"
+    "test": "jest --config jest.config.cjs",
+    "postinstall": "tsc",
+    "production": "./build/index.js"
   },
   "author": "Simei Parreiras",
   "license": "ISC",
@@ -34,5 +36,8 @@
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.0"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }

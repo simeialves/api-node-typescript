@@ -1,16 +1,14 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "target": "ES2020",
-    "moduleResolution": "Node",
     "rootDir": "./src",
     "outDir": "./build",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true,
-    "allowImportingTsExtensions": true,
-    "noEmit": true
+    "strict": true
   },
   "include": ["src"],
-  "exclude": ["./jest.config.ts", "./node_modules", "./tests", "./build"]
+  "exclude": ["node_modules", "tests", "build"]
 }
